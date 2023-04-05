@@ -15,5 +15,6 @@ class Library(discord.Cog):
     async def raw_library(self, ctx):
         await ctx.respond(library_controller.get_library())
 
+
 def setup(bot):
     bot.add_cog(Library(bot))

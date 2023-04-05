@@ -13,4 +13,3 @@ class Testing(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Testing(bot))
-    
