@@ -21,7 +21,12 @@ def create_work(title: str, authors: list[str], genres: list[str], url: str):
     tick = library["data"]["id_ticker"]
     library["data"]["ticker"] += 1
 
-    library["library"][str(tick)] = work
+    library["library"][str(tick)] = {
+        "title": title,
+        "authors": authors,
+        "genres": genres,
+        "url": url
+    }
 
     library_file = library_repo().get_contents("library/library.json")
     library_repo().update_file(library_file.path,
