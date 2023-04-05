@@ -28,8 +28,7 @@ def create_work(title: str, authors: list[str], genres: list[str], url: str):
         "url": url
     }
 
-    library_file = library_repo().get_contents("library/library.json")
-    library_repo().update_file(library_file.path,
-                               f"Added {title}", library, library_file.sha)
-
-
+    repo = library_repo()
+    library_file = repo.get_contents("library/library.json")
+    repo.update_file(library_file.path,
+                     f"Added {title}", json.dumps(library, indent=4), library_file.sha)
