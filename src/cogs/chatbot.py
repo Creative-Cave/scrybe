@@ -20,7 +20,7 @@ class Chatbot(commands.Cog):
 
     @commands.slash_command(guild_ids=[915996676144111706])
     async def ask_scrybe(self, ctx, prompt: str):
-        response = await ctx.send_response("https://giphy.com/gifs/rodneydangerfield-thinking-math-rodney-gEvab1ilmJjA82FaSV")
+        response = await ctx.send_response("https://giphy.com/gifs/watchallblk-double-cross-allblk-dc-yeWfJK4cvMtSh8wrXP")
 
         await response.edit_original_response(content=f"**You said:**\n```{prompt}```\n**Scrybe says:\n**```{brain.ask(prompt)} ```")
 
