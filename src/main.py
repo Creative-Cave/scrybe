@@ -2,6 +2,8 @@ import discord
 import os
 from dotenv import load_dotenv
 
+print("starting bot...")
+
 bot = discord.Bot()
 
 # register cogs in cogs dir
