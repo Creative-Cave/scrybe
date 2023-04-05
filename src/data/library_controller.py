@@ -19,7 +19,7 @@ def get_library() -> dict:
 def create_work(title: str, authors: list[str], genres: list[str], url: str):
     library = get_library()
     tick = library["data"]["id_ticker"]
-    library["data"]["ticker"] += 1
+    library["data"]["id_ticker"] += 1
 
     library["library"][str(tick)] = {
         "title": title,
