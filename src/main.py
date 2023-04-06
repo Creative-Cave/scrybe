@@ -24,3 +24,8 @@ async def on_ready():
 
 load_dotenv()
 bot.run(os.getenv("BOT_TOKEN"))
+
+#    _._     _,-'""`-._
+#   (,-.`._,'(       |\`-/|
+#       `-.-' \ )-`( , o o)
+#             `-    \`_`"'-
