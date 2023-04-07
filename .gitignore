@@ -1,6 +1,6 @@
 .replit
 replit.nix
-venv/
+venv
 poetry.lock
 pyproject.toml
-__pycache__/
+__pycache__
