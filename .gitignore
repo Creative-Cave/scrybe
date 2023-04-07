@@ -1,7 +1,3 @@
 .replit
 replit.nix
 venv/
-poetry.lock
-pyproject.toml
-__pycache__/
-*.pyc
