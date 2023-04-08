@@ -11,6 +11,7 @@ class CanvaDesign(commands.Cog):
   async def canva(self, message):
     if "canva design" in message.content.lower():
       await message.add_reaction("🗣️")
+      await message.add_reaction("<:a:1094403429604020294>")
   
 
 def setup(bot):
