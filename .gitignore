@@ -1,6 +1,8 @@
 .breakpoints
 .replit
+.config/
 poetry.lock
 replit.nix
 pyproject.toml
+venv/
 **/__pycache__/
