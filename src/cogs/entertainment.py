@@ -13,6 +13,7 @@ class Entertainment(commands.Cog):
   def __init__(self, bot):
     self.bot = bot
 
+  # select a random pickup line from assets/pickup_lines.txt and send it
   @commands.slash_command(guild_ids=[915996676144111706], name="pickup-line")
   @discord.commands.option("id", int, required=False, min_value=1, max_value=len(lines))
   @commands.has_role("Library Staff")

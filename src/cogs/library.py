@@ -11,24 +11,29 @@ class Library(discord.Cog):
   def __init__(self, bot):
     self.bot = bot
 
+  # create a slash command group so each library command is prefixed with /library
   library_group = SlashCommandGroup("library", "Commands to do with our server library")
   
+  # list of genres to select from when submitting
   genres = [
     "Fantasy", "Horror", "Mystery", "Comedy", "Romance", "Crime/Thriller",
     "Sci-Fi", "Non-Fiction", "Poetry"
   ]
   
+  # stand-in command so users can see the library
   @library_group.command(guild_ids=[915996676144111706])
   async def view(self, ctx):
     await ctx.respond(
       "You can find the server library through the link below. It'll be fully embedded into the bot soon!\n:link: <https://github.com/Writers-Cave/data/blob/main/library/library.json>"
     )
 
+  # debug command to send the contents of library.json in the data repo
   @library_group.command(guild_ids=[915996676144111706])
   @discord.commands.default_permissions(administrator=True)
   async def raw_library(self, ctx):
     await ctx.respond(lc.get_library())
 
+  # submission command which sends works in to be reviewed by admins
   @library_group.command(guild_ids=[915996676144111706])
   @discord.commands.default_permissions(administrator=True)
   @discord.option("title", description="The title of your work")

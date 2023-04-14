@@ -7,6 +7,7 @@ class ServerStats(commands.Cog):
   def __init__(self, bot):
     self.bot = bot
 
+  # counts the amount of bots and humans in the server and sends a message with that data
   @commands.slash_command(guild_ids=[915996676144111706])
   async def members(self, ctx):
     response = await ctx.send_response("Counting members...")
