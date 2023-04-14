@@ -15,8 +15,8 @@ for i, fn in enumerate(os.listdir('./src/cogs')):
 
 if "🗣️.py" not in os.listdir("./src/cogs"):
   raise SyntaxError("CANVA DESIGN 🗣️(s) not found")
-print("done")
 
+print("done")
 
 @bot.event
 async def on_ready():
