@@ -3,12 +3,7 @@ from discord.commands import SlashCommandGroup
 from data import library_controller as lc
 from discord.ext import commands
 
-genres = [
-  discord.OptionChoice(name=genre) for genre in [
-    "Fantasy", "Horror", "Mystery", "Comedy", "Romance", "Crime/Thriller",
-    "Sci-Fi", "Non-Fiction", "Poetry"
-  ]
-]
+
 
 
 class Library(discord.Cog):
@@ -17,6 +12,11 @@ class Library(discord.Cog):
     self.bot = bot
 
   library_group = SlashCommandGroup("library", "Commands to do with our server library")
+  
+  genres = [
+    "Fantasy", "Horror", "Mystery", "Comedy", "Romance", "Crime/Thriller",
+    "Sci-Fi", "Non-Fiction", "Poetry"
+  ]
   
   @library_group.command(guild_ids=[915996676144111706])
   async def view(self, ctx):
@@ -35,7 +35,7 @@ class Library(discord.Cog):
   @discord.option("author", description="The name/nickname of the work's author")
   @discord.option("genre",
                   description="The genre that suits this work the best",
-                  options=genres)
+                  choices=genres)
   @discord.option("url", description="The url that this work can be read at")
   async def submit(self, ctx, title: str, author: str, genre: str, url: str):
     response = await ctx.send_response("Sending your submission...")
