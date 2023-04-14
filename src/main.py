@@ -2,8 +2,6 @@ import discord
 import os
 from dotenv import load_dotenv
 
-print("starting bot...")
-
 bot = discord.Bot(intents=discord.Intents.all())
 
 # register cogs in cogs dir
@@ -28,6 +26,10 @@ async def on_ready():
 def run():
   load_dotenv()
   bot.run(os.getenv("BOT_TOKEN"))
+
+# check if this file is being run directly. if so, start the bot.
+if __name__ == "__main__":
+  run()
 
 #    _._     _,-'""`-._ <>
 #   (,-.`._,'(       |\`-/|

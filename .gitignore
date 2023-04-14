@@ -1,5 +1,6 @@
 .breakpoints
 .replit
+.env
 .config/
 poetry.lock
 replit.nix
@@ -8,3 +9,5 @@ venv/
 **/__pycache__/
 poetry.lock
 pyproject.toml
+Pipfile
+Pipfile.lock
