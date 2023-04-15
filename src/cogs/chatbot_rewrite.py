@@ -15,15 +15,24 @@ class Chatbot(commands.Cog):
   async def ask_scrybe(self, ctx, message: str):
     response = await ctx.send_response("Scrybe is thinking...")
 
+    embed = discord.Embed(title="Ask Scrybe", colour=discord.Colour.teal())
+    embed.add_field(name="You said:", value=message, inline=False)
+
     data = {
       "application": "8583352252014867612",
-      "instance": "47089143",
+      "instance": "46045911",
       "message": message
     }
 
     r = requests.post("https://www.botlibre.com/rest/json/chat", json=data).text
-    bot_message = json.loads(r)["message"]
-    await response.edit_original_response(content=f"You said: ```{message}```\nScrybe says: ```{bot_message}```")
+    try:
+      bot_message = json.loads(r)["message"]
+    except json.decoder.JSONDecodeError:
+      bot_message = r
+    
+    embed.add_field(name="Scrybe says:", value=bot_message, inline=False)
+      
+    await response.edit_original_response(content="", embed=embed)
 
 
 def setup(bot):
