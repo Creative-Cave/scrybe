@@ -20,7 +20,7 @@ def get_library() -> dict:
 
 
 # add a work with a title, author, genre and url
-def create_work(title: str, author: str, genre: str, url: str, author: int) -> None:
+def create_work(title: str, author: str, genre: str, url: str, submitter: int) -> None:
     library = get_library()
 
     tick = library["data"]["id_ticker"]
@@ -31,7 +31,7 @@ def create_work(title: str, author: str, genre: str, url: str, author: int) -> N
         "author": author,
         "genre": genre,
         "url": url,
-        "submitted_by": author
+        "submitted_by": submitter
     }
 
     update_library(library, f"Added #{tick}")
