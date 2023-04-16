@@ -13,6 +13,6 @@ class Staff(commands.Cog):
         await ctx.send_response("Sending...", ephemeral=True, delete_after=0)
         await ctx.channel.send(message)
 
+
 def setup(bot):
     bot.add_cog(Staff(bot))
-    

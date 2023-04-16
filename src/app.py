@@ -10,24 +10,24 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-  return ("TAKE A LOOK AT MY CANVA DESIGN 🗣️")
+    return ("TAKE A LOOK AT MY CANVA DESIGN 🗣️")
 
 
 def site():
-  app.run(host="0.0.0.0", port=random.randint(2000, 9000))
+    app.run(host="0.0.0.0", port=random.randint(2000, 9000))
 
 
 def stay_alive():
-  while True:
-    start = time.time()
-
     while True:
-      end = time.time()
+        start = time.time()
 
-      # This 15 is for the amount of minutes you change it and take it upto 30 minutes at most
-      if ((end - start) >= (15 * 60)):
-        urllib.request.urlopen("https://scrybe.writerscave.repl.co")
-        break
+        while True:
+            end = time.time()
+
+            # This 15 is for the amount of minutes you change it and take it upto 30 minutes at most
+            if ((end - start) >= (15 * 60)):
+                urllib.request.urlopen("https://scrybe.writerscave.repl.co")
+                break
 
 
 site_thread = Thread(target=site)
