@@ -51,7 +51,7 @@ class Chatbot(commands.Cog):
         # await message.channel.trigger_typing()
         chatbot_response = channel_chatbot.generate_response(message.content).replace("||", "")
 
-        await message.channel.send(chatbot_response, reference=message)
+        await message.channel.send(chatbot_response, reference=message, mention_author=False)
 
 
 def setup(bot):
