@@ -8,8 +8,21 @@ from discord.ext import commands
 
 load_dotenv()
 
-class Chatbot(commands.Cog):
 
+class chatbot():
+    def __init__(self,api_url=None):
+        if api_url == None:
+            self.api_url = "https://clydeapi.happyenderyt123.repl.co/clyde/message"
+        else:
+            self.api_url = api_url
+
+  
+    def generate_response(self,prompt):
+        r =requests.get(self.api_url+f"?prompt={prompt}")
+        return r.text
+      
+
+class Chatbot(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -21,23 +34,11 @@ class Chatbot(commands.Cog):
 
         embed = discord.Embed(title="Ask Scrybe", colour=discord.Colour.blue())
         embed.add_field(name="You said:", value=message, inline=False)
+        chatbot_response = chatbot().generate_response(message)
+      
+        embed.add_field(name="Scrybe says:", value=chatbot_response, inline=False)
 
-        data = {
-            "application": random.choice(os.getenv("BL_IDS").split("_")),
-            "instance": "47118083",
-            "message": message
-        }
-
-        r = requests.post(
-            "https://www.botlibre.com/rest/json/chat", json=data).text
-        try:
-            bot_message = json.loads(r)["message"]
-        except json.decoder.JSONDecodeError:
-            bot_message = r
-
-        embed.add_field(name="Scrybe says:", value=bot_message, inline=False)
-
-        await response.edit_original_response(content="", embed=embed.set_footer(text=f"ID: {data['application']}"))
+        await response.edit_original_response(content="", embed=embed.set_footer(text="Test build. Bugs may occur and Scrybe may say things that are incorrect or offensive."))
 
 
 def setup(bot):
