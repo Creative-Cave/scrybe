@@ -23,7 +23,7 @@ print("done")
 @bot.event
 async def on_ready():  # print to console once bot is up and ready
     print("bot is online")
-    await bot.change_presence(activity=discord.Game(name=f"{os.getenv('HOST')} version"))
+    await bot.change_presence(activity=discord.Game(name=f"Running on host {os.getenv('HOST')}"))
 
 
 def run():  # function to start the bot to either be run directly or though app.py
