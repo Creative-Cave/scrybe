@@ -38,5 +38,17 @@ class Chatbot(commands.Cog):
         await response.edit_original_response(content="", embed=embed.set_footer(text="Test build. Bugs may occur and Scrybe may say things that are incorrect or offensive."))
 
 
+    @commands.Cog.listener("on_message")
+    async def scrybe_chat(self, message):
+        # ctx = await self.bot.get_context(message)
+        if message.channel.id != 1131307096634298490 or message.author.bot:
+            return
+
+        # await message.channel.trigger_typing()
+        chatbot_response = chatbot().generate_response(message)
+
+        await message.channel.send(chatbot_response)
+
+
 def setup(bot):
     bot.add_cog(Chatbot(bot))
