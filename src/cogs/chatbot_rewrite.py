@@ -15,8 +15,12 @@ class chatbot():
 
   
     def generate_response(self,prompt):
-        r =requests.get(self.api_url+f"?prompt={prompt}")
+        r = requests.get(self.api_url+f"?prompt={prompt}")
         return r.text
+
+
+command_chatbot = chatbot()
+channel_chatbot = chatbot()
       
 
 class Chatbot(commands.Cog):
@@ -31,7 +35,7 @@ class Chatbot(commands.Cog):
 
         embed = discord.Embed(title="Ask Scrybe", colour=discord.Colour.blue())
         embed.add_field(name="You said:", value=message, inline=False)
-        chatbot_response = chatbot().generate_response(message)
+        chatbot_response = command_chatbot.generate_response(message)
       
         embed.add_field(name="Scrybe says:", value=chatbot_response, inline=False)
 
@@ -45,9 +49,9 @@ class Chatbot(commands.Cog):
             return
 
         # await message.channel.trigger_typing()
-        chatbot_response = chatbot().generate_response(message)
+        chatbot_response = channel_chatbot.generate_response(message.content).replace("||", "")
 
-        await message.channel.send(chatbot_response)
+        await message.channel.send(chatbot_response, reference=message)
 
 
 def setup(bot):
