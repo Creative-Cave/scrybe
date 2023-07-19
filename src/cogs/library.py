@@ -73,10 +73,10 @@ class Library(discord.Cog):
         except KeyError:
             return await response.edit_original_response(content="That ID isn't valid.")
 
-        await response.edit_original_response(content="Submitted. Notifying submitter...")
+        await response.edit_original_response(content="Approved submission. Notifying the author...")
 
         user = await self.bot.fetch_user(sub["submitted_by"])
-        await user.send(f"Your submission \"{sub['title']}\" was approved! It'll appear in our library soon.")
+        await user.send(f"Congratulations {user.mention}, your submission \"{sub['title']}\" was approved! It'll appear in our library soon.")
 
         await response.edit_original_response(content="Done!", delete_after=3)
 
