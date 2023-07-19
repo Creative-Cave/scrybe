@@ -1,7 +1,6 @@
 import discord
 from discord.commands import SlashCommandGroup
 from data import library_controller as lc
-from discord.ext import commands
 
 
 class Library(discord.Cog):
