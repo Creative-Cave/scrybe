@@ -1,5 +1,8 @@
 import discord
 import requests
+import aiohttp
+import os
+from discord import Webhook
 from dotenv import load_dotenv
 from discord.ext import commands
 
@@ -43,15 +46,18 @@ class Chatbot(commands.Cog):
 
 
     @commands.Cog.listener("on_message")
-    async def scrybe_chat(self, message):
-        # ctx = await self.bot.get_context(message)
+    async def channel_chatbot(self, message):
         if message.channel.id != 1131307096634298490 or message.author.bot:
             return
 
-        # await message.channel.trigger_typing()
         chatbot_response = channel_chatbot.generate_response(message.content).replace("||", "")
 
-        await message.channel.send(chatbot_response, reference=message, mention_author=False)
+        async with aiohttp.ClientSession() as session:
+            webhook = Webhook.from_url(os.getenv("CLIVE_WEBHOOK_URL"), session=session)
+            await webhook.send(f"> *Replying to {message.author.mention}:*\n{chatbot_response}", username="Clive")
+
+        # await message.channel.send(chatbot_response, reference=message, mention_author=False)
+        
 
 
 def setup(bot):
