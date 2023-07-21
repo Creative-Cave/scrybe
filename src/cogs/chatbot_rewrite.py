@@ -29,6 +29,7 @@ channel_chatbot = chatbot()
 class Chatbot(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.last_replied = 0
 
     @commands.slash_command(guild_ids=[915996676144111706])
     @discord.commands.default_permissions(administrator=True)
@@ -54,7 +55,13 @@ class Chatbot(commands.Cog):
 
         async with aiohttp.ClientSession() as session:
             webhook = Webhook.from_url(os.getenv("CLIVE_WEBHOOK_URL"), session=session)
-            await webhook.send(f"> *Replying to {message.author.mention}:*\n{chatbot_response}", username="Clive")
+            if self.last_replied == message.author.id:
+                await webhook.send(chatbot_response, username="Clive")
+            else:
+                await webhook.send(f"> *Replying to {message.author.mention}:*\n{chatbot_response}", username="Clive")
+        
+        self.last_replied = message.author.id
+                
 
         # await message.channel.send(chatbot_response, reference=message, mention_author=False)
         
