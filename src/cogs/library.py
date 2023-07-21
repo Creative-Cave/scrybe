@@ -41,6 +41,9 @@ class Library(discord.Cog):
                     choices=genres)
     @discord.option("url", description="The url that this work can be read at")
     async def submit(self, ctx, title: str, author: str, genre: str, url: str):
+        if isinstance(ctx.channel, discord.channel.DMChannel):
+            return await ctx.send_response("This command cannot be run in DMs. If you have permission, run this command in the Writer's Cave server instead.")
+
         response = await ctx.send_response("Sending your submission...")
         ls_channel = await self.bot.fetch_channel(1096127028970918048)
 
@@ -66,6 +69,10 @@ class Library(discord.Cog):
     @discord.commands.default_permissions(administrator=True)
     @discord.option("id", description="The id for the submission to approve")
     async def approve(self, ctx, id: int):
+        if isinstance(ctx.channel, discord.channel.DMChannel):
+            return await ctx.send_response("This command cannot be run in DMs. If you have permission, run this command in the Writer's Cave server instead.")
+            
+
         response = await ctx.send_response("Working...")
 
         try:
