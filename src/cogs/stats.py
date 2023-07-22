@@ -23,19 +23,19 @@ class ServerStats(commands.Cog):
         ping = self.bot.latency
         if round(ping * 1000) <= 50:
             colour = 0x44ff44
-            tier = "Good"
+            tier = "> Good\nAverage\nPoor\nBad"
         elif round(ping * 1000) <= 100:
             colour=0xffd000
-            tier = "Average"
+            tier = "Good\n> Average\nPoor\nBad"
         elif round(ping * 1000) <= 200:
             colour=0xff6600
-            tier = "Poor"
+            tier = "Good\nAverage\n> Poor\nBad"
         else:
             colour=0x990000
-            tier = "Bad"
+            tier = "Good\nAverage\nPoor\n> Bad"
 
         embed = discord.Embed(title=":ping_pong: Latency", description=f"Current ping: ~{round(ping * 1000, 3)}ms", color=colour)
-        embed.set_footer(text=tier)
+        embed.add_field(name="Rating", value=tier)
         await ctx.respond(embed=embed)
     
 
