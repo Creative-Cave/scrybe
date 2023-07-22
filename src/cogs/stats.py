@@ -4,20 +4,40 @@ from discord.ext import commands
 
 class ServerStats(commands.Cog):
 
-  def __init__(self, bot):
-    self.bot = bot
+    def __init__(self, bot):
+      self.bot = bot
+  
+    # counts the amount of bots and humans in the server and sends a message with that data
+    @commands.slash_command(guild_ids=[915996676144111706])
+    async def members(self, ctx):
+      response = await ctx.send_response("Counting members...")
+  
+      members = await ctx.guild.fetch_members(limit=None).flatten()
+      bots = len([m for m in members if m.bot])
+      humans = len(members) - bots
+  
+      await response.edit_original_response(content = f"Humans - {humans}\nBots - {bots}\nTotal - {len(members)}")
 
-  # counts the amount of bots and humans in the server and sends a message with that data
-  @commands.slash_command(guild_ids=[915996676144111706])
-  async def members(self, ctx):
-    response = await ctx.send_response("Counting members...")
+    @commands.slash_command(guild_ids=[915996676144111706])
+    async def ping(self, ctx):
+        ping = self.bot.latency
+        if round(ping * 1000) <= 50:
+            colour = 0x44ff44
+            tier = "Good"
+        elif round(ping * 1000) <= 100:
+            colour=0xffd000
+            tier = "Average"
+        elif round(ping * 1000) <= 200:
+            colour=0xff6600
+            tier = "Poor"
+        else:
+            colour=0x990000
+            tier = "Bad"
 
-    members = await ctx.guild.fetch_members(limit=None).flatten()
-    bots = len([m for m in members if m.bot])
-    humans = len(members) - bots
-
-    await response.edit_original_response(content = f"Humans - {humans}\nBots - {bots}\nTotal - {len(members)}")
-
+        embed = discord.Embed(title=":ping_pong: Latency", description=f"Current ping: ~{round(ping * 1000, 3)}ms", color=colour)
+        embed.set_footer(text=tier)
+        await ctx.respond(embed=embed)
+    
 
 def setup(bot):
   bot.add_cog(ServerStats(bot))
