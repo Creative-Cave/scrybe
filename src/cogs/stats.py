@@ -23,16 +23,16 @@ class ServerStats(commands.Cog):
     ping = self.bot.latency
     if round(ping * 1000) <= 50:
       colour = 0x44ff44
-      tier = "> Good\nAverage\nPoor\nBad"
+      tier = "<:signalgood:1132668380466401341> Good"
     elif round(ping * 1000) <= 100:
       colour = 0xffd000
-      tier = "Good\n> Average\nPoor\nBad"
+      tier = "<:signalaverage:1132668378088218705> Average"
     elif round(ping * 1000) <= 200:
       colour = 0xff6600
-      tier = "Good\nAverage\n> Poor\nBad"
+      tier = "<:signalpoor:1132668374493700177> Poor"
     else:
       colour = 0x990000
-      tier = "Good\nAverage\nPoor\n> Bad"
+      tier = "<:signalbad:1132668370647515197> Bad"
 
     embed = discord.Embed(title=":ping_pong: Latency", description=f"Current ping: ~{round(ping * 1000, 3)}ms", color=colour)
     embed.add_field(name="Rating", value=tier)
