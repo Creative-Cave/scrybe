@@ -3,7 +3,6 @@ from discord.ext import commands
 
 
 class ServerStats(commands.Cog):
-
   def __init__(self, bot):
     self.bot = bot
 
@@ -35,11 +34,9 @@ class ServerStats(commands.Cog):
       colour = 0x990000
       tier = "Good\nAverage\nPoor\n> Bad"
 
-    embed = discord.Embed(
-      title=":ping_pong: Latency",
-      description=f"Current ping: ~{round(ping * 1000, 3)}ms",
-      color=colour)
+    embed = discord.Embed(title=":ping_pong: Latency", description=f"Current ping: ~{round(ping * 1000, 3)}ms", color=colour)
     embed.add_field(name="Rating", value=tier)
+    
     await ctx.respond(embed=embed)
 
 

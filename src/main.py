@@ -27,8 +27,7 @@ async def on_ready():  # print to console once bot is up and ready
     name=f"Running on host {os.getenv('HOST')}"))
 
 
-def run(
-):  # function to start the bot to either be run directly or though app.py
+def run():  # function to start the bot to either be run directly or though app.py
   load_dotenv()
   bot.run(os.getenv("BOT_TOKEN"))
 

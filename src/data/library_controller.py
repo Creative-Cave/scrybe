@@ -20,8 +20,7 @@ def get_library() -> dict:
 
 
 # add a work with a title, author, genre and url
-def create_work(title: str, author: str, genre: str, url: str,
-                submitter: int) -> None:
+def create_work(title: str, author: str, genre: str, url: str, submitter: int) -> int:
   library = get_library()
 
   tick = library["data"]["id_ticker"]
@@ -35,12 +34,12 @@ def create_work(title: str, author: str, genre: str, url: str,
     "submitted_by": submitter
   }
 
+  return tick
   update_library(library, f"Added #{tick}")
 
 
 # create a submission for server review
-def create_submission(title: str, author: str, genre: str, url: str,
-                      submitter: int) -> int:
+def create_submission(title: str, author: str, genre: str, url: str, submitter: int) -> int:
   library = get_library()
 
   tick = library["data"]["submission_ticker"]
@@ -109,5 +108,4 @@ def approve_submission(sub_id: int) -> dict:
 def update_library(new_library: dict, commit_msg: str) -> None:
   repo = library_repo()
   library_file = repo.get_contents("library/library.json")
-  repo.update_file(library_file.path, commit_msg,
-                   json.dumps(new_library, indent=4), library_file.sha)
+  repo.update_file(library_file.path, commit_msg, json.dumps(new_library, indent=4), library_file.sha)
