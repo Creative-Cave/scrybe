@@ -36,7 +36,7 @@ def run(
 if __name__ == "__main__":  # check if this file is being run directly. if so, start the bot with run()
   run()
 
-#    _._     _,-'""`-._ <>
-#   (,-.`._,'(       |\`-/|
-#       `-.-' \ )-`( , o o)   _______
-#             `-    \`_`"'-  /_layla_\
+#    _._     _,-~~*-._ <>
+#   (,-.`._,'(       |\`-/|  Fly high <3
+#       `-.-' \ )-`( , ^ ^)   ________
+#             `-    \`_`"'-  /  𝓛𝓪𝔂𝓵𝓪  \
