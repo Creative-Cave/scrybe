@@ -74,7 +74,8 @@ class Chatbot(commands.Cog):
 
     self.last_replied = message.author.id
 
-    # await message.channel.send(chatbot_response, reference=message, mention_author=False)
+    print(f"FROM {message.author.name}:\n{message.content}\n")
+    print(f"RESPONSE: {chatbot_response}")
 
 
 def setup(bot):
