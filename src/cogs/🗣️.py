@@ -10,12 +10,11 @@ class CanvaDesign(commands.Cog):
   # add reactions in specific cases
   @commands.Cog.listener("on_message")
   async def canva(self, message):
-    if "canva" in message.content.lower(
-    ) and "design" in message.content.lower():
+    msg = message.content.lower()
+    if "canva" in msg and "design" in msg:
       await message.add_reaction("🗣️")
       await message.add_reaction("<:a:1094403429604020294>")
-    if "inkscape" in message.content.lower(
-    ) and "design" in message.content.lower():
+    if "inkscape" in msg and "design" in msg:
       await message.add_reaction("🤦‍♂️")
       await message.add_reaction("❌")
       await message.add_reaction("❓")

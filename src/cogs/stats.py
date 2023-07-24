@@ -7,7 +7,7 @@ class ServerStats(commands.Cog):
     self.bot = bot
 
   # counts the amount of bots and humans in the server and sends a message with that data
-  @commands.slash_command(guild_ids=[915996676144111706])
+  @commands.slash_command(guild_ids=[915996676144111706], description="Counts the number of humans and bots")
   async def members(self, ctx):
     response = await ctx.send_response("Counting members...")
 
@@ -18,7 +18,7 @@ class ServerStats(commands.Cog):
     await response.edit_original_response(
       content=f"Humans - {humans}\nBots - {bots}\nTotal - {len(members)}")
 
-  @commands.slash_command(guild_ids=[915996676144111706])
+  @commands.slash_command(guild_ids=[915996676144111706], description="Returns the bot's latency")
   async def ping(self, ctx):
     ping = self.bot.latency
     if round(ping * 1000) <= 50:

@@ -28,7 +28,7 @@ class Library(discord.Cog):
     await ctx.respond(lc.get_library())
 
   # submission command which sends works in to be reviewed by admins
-  @library_group.command(guild_ids=[915996676144111706])
+  @library_group.command(guild_ids=[915996676144111706], description="Submit your work to be reviewed and potentially added to our library")
   @discord.commands.default_permissions(administrator=True)
   @discord.option("title", description="The title of your work")
   @discord.option("author", description="The name/nickname of the work's author")
@@ -57,7 +57,7 @@ class Library(discord.Cog):
 
     await response.edit_original_response(content="Submission sent!")
 
-  @library_group.command(guild_ids=[915996676144111706])
+  @library_group.command(guild_ids=[915996676144111706], description="Approves a member's work")
   @discord.commands.default_permissions(administrator=True)
   @discord.option("id", description="The id for the submission to approve")
   async def approve(self, ctx, id: int):

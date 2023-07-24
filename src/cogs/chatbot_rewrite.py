@@ -30,7 +30,7 @@ class Chatbot(commands.Cog):
     self.bot = bot
     self.last_replied = 0
 
-  @commands.slash_command(guild_ids=[915996676144111706])
+  @commands.slash_command(guild_ids=[915996676144111706], description="Talk to Scrybe (alternative to Discord's Clyde)")
   @discord.commands.default_permissions(administrator=True)
   @discord.commands.option("message", description="The prompt that the bot will use to generate a response", max_length=1024)
   async def ask_scrybe(self, ctx, message: str):
