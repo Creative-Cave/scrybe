@@ -4,9 +4,15 @@
 
 ### Hosts
 
-Scrybe currently has two hosts. Astra is the main host (self-host). Cybrix is the secondary host which runs in the cloud. It's primarily used for testing and development purposes.
+Scrybe currently has three hosts:
+- Astra
+ - Primary host
+- Cybrix
+ - Testing host - usually buggy
+- Epsilon
+ - Development host - will not be used too often
 
-You can see which host Scrybe is currently running on by checking its status: it will say "Running on {HOST}".
+You can see which host Scrybe is currently running on by checking its status: it will say "Running on host {HOST}".
 
 ![Example](https://github.com/Writers-Cave/scrybe/assets/118836504/6931f233-bc9e-48d1-8d05-ce6e918e0291)
 
