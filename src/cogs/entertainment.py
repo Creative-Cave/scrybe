@@ -1,8 +1,9 @@
 import discord
 import random
+import os
 from discord.ext import commands
 
-with open("src/assets/pickup_lines.txt", "r") as fp:
+with open(os.path.join("src", "assets", "pickup_lines.txt"), "r", encoding="utf-8") as fp:
   lines = fp.read().split("\n")
 
 
