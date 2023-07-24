@@ -5,12 +5,9 @@
 ### Hosts
 
 Scrybe currently has three hosts:
-- Astra
- - Primary host
-- Cybrix
- - Testing host - usually buggy
-- Epsilon
- - Development host - will not be used too often
+- Astra - Primary host
+- Cybrix - Testing host, usually buggy
+- Epsilon - Development host, will not be used too often
 
 You can see which host Scrybe is currently running on by checking its status: it will say "Running on host {HOST}".
 
