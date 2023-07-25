@@ -47,10 +47,10 @@ class Chatbot(commands.Cog):
 
   @commands.Cog.listener("on_message")
   async def channel_chatbot(self, message):
-    if message.channel.id != 1131307096634298490 or message.author.bot:
+    if message.channel.id != 1131307096634298490 or message.author.bot or message.content.startswith("^"):
       return
 
-    chatbot_response = channel_chatbot.generate_response(message.content)
+    chatbot_response = channel_chatbot.generate_response(message.content)[:2000]
     chatbot_response = chatbot_response.replace("||", "") # remove spoilers automatically added by the api
 
     async with aiohttp.ClientSession() as session: # create a new "session" for the webhook
