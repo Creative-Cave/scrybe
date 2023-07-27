@@ -29,7 +29,6 @@ class Library(discord.Cog):
 
   # submission command which sends works in to be reviewed by admins
   @library_group.command(guild_ids=[915996676144111706], description="Submit your work to be reviewed and potentially added to our library")
-  @discord.commands.default_permissions(administrator=True)
   @discord.option("title", description="The title of your work")
   @discord.option("author", description="The name/nickname of the work's author")
   @discord.option("genre", description="The genre that suits this work the best", choices=genres)
