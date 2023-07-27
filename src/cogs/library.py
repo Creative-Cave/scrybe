@@ -1,4 +1,5 @@
 import discord
+from discord.ext import commands
 from discord.commands import SlashCommandGroup
 from data import library_controller as lc
 
@@ -28,15 +29,13 @@ class Library(discord.Cog):
     await ctx.respond(lc.get_library())
 
   # submission command which sends works in to be reviewed by admins
-  @library_group.command(guild_ids=[915996676144111706], description="Submit your work to be reviewed and potentially added to our library")
+  @commands.slash_command(guild_ids=[915996676144111706], description="Submit your work to be reviewed and potentially added to our library")
+  @commands.cooldown(1, 120, commands.BucketType.user)
   @discord.option("title", description="The title of your work")
   @discord.option("author", description="The name/nickname of the work's author")
   @discord.option("genre", description="The genre that suits this work the best", choices=genres)
   @discord.option("url", description="The url that this work can be read at")
   async def submit(self, ctx, title: str, author: str, genre: str, url: str):
-    if isinstance(ctx.channel, discord.channel.DMChannel):
-      return await ctx.send_response("This command cannot be run in DMs. If you have permission, please run this command in the Writer's Cave server instead.")
-
     response = await ctx.send_response("Sending your submission...")
     ls_channel = await self.bot.fetch_channel(1096127028970918048)
 
@@ -61,8 +60,8 @@ class Library(discord.Cog):
   @discord.option("id", description="The id for the submission to approve")
   @discord.option("change_title", description="Change the work's title (correct grammar/remove anything against rules)", required=False)
   async def approve(self, ctx, id: int, change_title: str):
-    if isinstance(ctx.channel, discord.channel.DMChannel):
-      return await ctx.send_response("This command cannot be run in DMs. If you have permission, please run this command in the Writer's Cave server instead.")
+    if not ctx.guild:
+      return await ctx.send_response("This is a sensitive command, so it cannot be run in DMs. If you have permission, please run this command in the Writer's Cave server instead.")
 
     response = await ctx.send_response("Working...")
 
