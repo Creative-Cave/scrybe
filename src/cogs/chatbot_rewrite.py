@@ -47,7 +47,7 @@ class Chatbot(commands.Cog):
 
   @commands.Cog.listener("on_message")
   async def channel_chatbot(self, message):
-    if message.channel.id != 1131307096634298490 or message.author.bot or message.content.startswith("^"):
+    if message.channel.id not in [1131307096634298490, 1134120291765846066] or message.author.bot or message.content.startswith("^"):
       return
 
     chatbot_response = channel_chatbot.generate_response(message.content)[:2000]
