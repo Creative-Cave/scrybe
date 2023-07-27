@@ -60,14 +60,15 @@ class Library(discord.Cog):
   @library_group.command(guild_ids=[915996676144111706], description="Approves a member's work")
   @discord.commands.default_permissions(administrator=True)
   @discord.option("id", description="The id for the submission to approve")
-  async def approve(self, ctx, id: int):
+  @discord.option("change_title", description="Change the work's title (correct grammar/remove anything against rules)", required=False)
+  async def approve(self, ctx, id: int, change_title: str):
     if isinstance(ctx.channel, discord.channel.DMChannel):
       return await ctx.send_response("This command cannot be run in DMs. If you have permission, please run this command in the Writer's Cave server instead.")
 
     response = await ctx.send_response("Working...")
 
     try:
-      sub = lc.approve_submission(id)
+      sub = lc.approve_submission(id, change_title)
     except KeyError:
       return await response.edit_original_response(content="That ID isn't valid, please try again")
 

@@ -26,7 +26,7 @@ def create_work(title: str, author: str, genre: str, url: str, submitter: int) -
   tick = library["data"]["id_ticker"]
   library["data"]["id_ticker"] += 1
 
-  library["library"][str(tick)] = {
+  library["library"][f"id{tick}"] = {
     "title": title,
     "author": author,
     "genre": genre,
@@ -45,7 +45,7 @@ def create_submission(title: str, author: str, genre: str, url: str, submitter: 
   tick = library["data"]["submission_ticker"]
   library["data"]["submission_ticker"] += 1
 
-  library["submissions"][str(tick)] = {
+  library["submissions"][f"id{tick}"] = {
     "title": title,
     "author": author,
     "genre": genre,
@@ -61,7 +61,7 @@ def create_submission(title: str, author: str, genre: str, url: str, submitter: 
 def delete_submission(sub_id: int, commit_after: bool) -> dict:
   library = get_library()
 
-  del library["submissions"][str(sub_id)]
+  del library["submissions"][f"id{sub_id}"]
 
   if commit_after:
     update_library(library, f"Removed submission #{sub_id}")
@@ -73,20 +73,23 @@ def delete_submission(sub_id: int, commit_after: bool) -> dict:
 def delete_work(work_id: int, commit_after: bool) -> dict:
   library = get_library()
 
-  del library["library"][str(work_id)]
+  del library["library"][f"id{work_id}"]
 
   if commit_after:
     update_library(library, f"Removed #{work_id}")
 
 
 # delete a specified submission and move it to the library
-def approve_submission(sub_id: int) -> dict:
+def approve_submission(sub_id: int, new_title: str = None) -> dict:
   library = get_library()
 
   tick = library["data"]["id_ticker"]
   library["data"]["id_ticker"] += 1
 
-  sub = library["submissions"][str(sub_id)]
+  sub = library["submissions"][f"id{sub_id}"]
+
+  if new_title:
+    sub["title"] = new_title
 
   work = {
     "title": sub["title"],
@@ -96,8 +99,8 @@ def approve_submission(sub_id: int) -> dict:
     "submitted_by": sub["submitted_by"]
   }
 
-  library["library"][str(tick)] = work
-  del library["submissions"][str(sub_id)]
+  library["library"][f"id{tick}"] = work
+  del library["submissions"][f"id{sub_id}"]
 
   update_library(library, f"Approved submission #{sub_id}")
 
