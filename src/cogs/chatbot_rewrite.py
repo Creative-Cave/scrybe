@@ -56,14 +56,20 @@ class Chatbot(commands.Cog):
     if not message.content:
       chatbot_response = "It looks like you sent an attachment - I can't understand those right now! Please stick to sending text prompts."
 
-    async with aiohttp.ClientSession() as session: # create a new "session" for the webhook
-      webhook = Webhook.from_url(os.getenv("CLIVE_WEBHOOK_URL"), session=session)
+    if message.channel.id == 1131307096634298490:
+      async with aiohttp.ClientSession() as session: # create a new "session" for the webhook
+        webhook = Webhook.from_url(os.getenv("CLIVE_WEBHOOK_URL"), session=session)
 
+        if self.last_replied == message.author.id: # only ping the author if responding to a new person
+          await webhook.send(chatbot_response, username="Clive")
+        else:
+          await webhook.send(
+            f"> *Replying to {message.author.mention}:*\n{chatbot_response}", username="Clive")
+    else:
       if self.last_replied == message.author.id: # only ping the author if responding to a new person
-        await webhook.send(chatbot_response, username="Clive")
+        await message.channel.send(chatbot_response)
       else:
-        await webhook.send(
-          f"> *Replying to {message.author.mention}:*\n{chatbot_response}", username="Clive")
+          await message.channel.send(f"> *Replying to {message.author.mention}:*\n{chatbot_response}")
 
     self.last_replied = message.author.id
 
