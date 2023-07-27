@@ -50,6 +50,8 @@ class Chatbot(commands.Cog):
     if message.channel.id not in [1131307096634298490, 1134120291765846066] or message.author.bot or message.content.startswith("^"):
       return
 
+    message.content = message.content.replace("#", "")
+
     chatbot_response = channel_chatbot.generate_response(message.content)[:2000]
     chatbot_response = chatbot_response.replace("||", "") # remove spoilers automatically added by the api
 
