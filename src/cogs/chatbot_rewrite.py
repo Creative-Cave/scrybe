@@ -53,7 +53,7 @@ class Chatbot(commands.Cog):
     chatbot_response = channel_chatbot.generate_response(message.content)[:2000]
     chatbot_response = chatbot_response.replace("||", "") # remove spoilers automatically added by the api
 
-    if not message:
+    if not message.content:
       chatbot_response = "It looks like you sent an attachment - I can't understand those right now! Please stick to sending text prompts."
 
     async with aiohttp.ClientSession() as session: # create a new "session" for the webhook
