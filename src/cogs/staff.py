@@ -12,10 +12,6 @@ class Staff(commands.Cog):
     sent_message = await ctx.channel.send(message)
     await ctx.send_response("Sent message: {sent_message.jump_url}", ephemeral=True, delete_after=3)
 
-  @commands.slash_command(guild_ids=[915996676144111706], description="Throw an intentional error for testing")
-  async def error(self, ctx):
-    await ctx.send(wrong_message)
-
 
 def setup(bot):
   bot.add_cog(Staff(bot))
