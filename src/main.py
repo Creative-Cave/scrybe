@@ -27,6 +27,12 @@ async def on_ready():  # print to console once bot is up and ready
     name=f"Running on host {os.getenv('HOST')}"))
 
 
+@bot.event
+async def on_error(error):
+  log_channel = await bot.fetch_channel(1044725850702102528)
+  await log_channel.send(f"Error:```{error}```")
+
+
 def run():  # function to start the bot to either be run directly or though app.py
   load_dotenv()
   bot.run(os.getenv("BOT_TOKEN"))
