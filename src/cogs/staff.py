@@ -10,7 +10,7 @@ class Staff(commands.Cog):
   @discord.commands.default_permissions(administrator=True)
   async def say(self, ctx, message: str):
     sent_message = await ctx.channel.send(message)
-    await ctx.send_response("Sent message: {sent_message.jump_url}", ephemeral=True, delete_after=3)
+    await ctx.send_response(f"Sent message: {sent_message.jump_url}", ephemeral=True, delete_after=3)
 
 
 def setup(bot):
