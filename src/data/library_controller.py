@@ -10,7 +10,7 @@ gh = github.Github(os.getenv("GH_API_TOKEN"))
 
 # return details about the data repository
 def library_repo() -> github.Repository.Repository:
-  return gh.get_repo("Writers-Cave/data")
+  return gh.get_repo("Creative-Cave/data")
 
 
 # return library.json as a dictionary
