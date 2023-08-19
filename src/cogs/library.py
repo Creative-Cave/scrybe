@@ -52,6 +52,7 @@ class Library(discord.Cog):
     submission_message = await ls_channel.send(embed=embed)
     await submission_message.add_reaction("👍")
     await submission_message.add_reaction("👎")
+    await submission_message.create_thread(name=f"Submission: {title}", auto_archive_duration=10080)
 
     await response.edit_original_response(content="Submission sent!")
 
