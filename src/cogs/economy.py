@@ -8,7 +8,6 @@ class Economy(commands.Cog):
     
     # get the balance of a user
     @commands.slash_command(guild_ids=[915996676144111706], description="Get the balance of yourself or another user.")
-    @commands.cooldown(1, 120, commands.BucketType.user)
     @discord.commands.option("user", discord.Member, required=False)
     async def balance(self, ctx, user: discord.Member):
         if not user:
