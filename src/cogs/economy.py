@@ -1,11 +1,14 @@
 import discord
 from discord.ext import commands
+from discord.commands import SlashCommandGroup
 from data import economy_controller as ec
 
 class Economy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
+    economy_group = SlashCommandGroup("economy", "Staff commands for the server economy")
+
     # get the balance of a user
     @commands.slash_command(guild_ids=[915996676144111706], description="Get the balance of yourself or another user.")
     @discord.commands.option("user", discord.Member, required=False)
@@ -24,7 +27,7 @@ class Economy(commands.Cog):
             colour = discord.Colour.green()
         )
 
-        embed.add_field(name="Balance", value=user_balance)
+        embed.add_field(name="Balance", value=f":coin: {user_balance:,}")
         await ctx.send_response(embed=embed)
 
 def setup(bot):

@@ -8,7 +8,6 @@ class Library(discord.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # create a slash command group so each library command is prefixed with /library
     library_group = SlashCommandGroup("library", "Commands to do with our server library")
 
     # list of genres to select from when submitting
@@ -62,7 +61,7 @@ class Library(discord.Cog):
     @discord.option("change_title", description="Change the work's title (correct grammar/remove anything against rules)", required=False)
     async def approve(self, ctx, id: int, change_title: str):
         if not ctx.guild:
-            return await ctx.send_response("This is a sensitive command, so it cannot be run in DMs. If you have permission, please run this command in the Writer's Cave server instead.")
+            return await ctx.send_response("This is a sensitive command, so it cannot be run in DMs. If you have permission, please run this command in the Creative Cave server instead.")
 
         response = await ctx.send_response("Working...")
 

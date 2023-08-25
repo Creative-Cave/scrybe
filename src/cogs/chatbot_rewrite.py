@@ -76,7 +76,7 @@ class Chatbot(commands.Cog):
         self.last_replied = message.author.id
 
         print(f"FROM {message.author.name}:\n{message.content}\n") # logging for moderation purposes
-        print(f"RESPONSE: {chatbot_response}")
+        print(f"RESPONSE: {chatbot_response}\n")
 
 
 def setup(bot):
