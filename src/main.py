@@ -1,10 +1,12 @@
 import discord
 import os
 import math
+import humanize
+import datetime
 from discord.ext import commands
 from dotenv import load_dotenv
 
-bot = discord.Bot(intents=discord.Intents.all())
+bot = discord.Bot(intents=discord.Intents.all(), activity=discord.Activity(type=5, name="Story Wars"))
 
 # count cogs in cogs dir
 exts_to_load = len(
@@ -21,13 +23,9 @@ if "🗣️.py" not in os.listdir(os.path.join("scrybe", "src", "cogs")):
 
 print("done")
 
-
 @bot.event
-async def on_ready(): # print to console once bot is up and ready
+async def on_ready():
     print("bot is online")
-    await bot.change_presence(activity=discord.Game(
-        name=f"Running on host {os.getenv('HOST')}"))
-
 
 @bot.event
 async def on_error(error):
@@ -38,7 +36,11 @@ async def on_error(error):
 @bot.event
 async def on_application_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
-        embed = discord.Embed(title=":hourglass: You're on cooldown!", description=f"It looks like you're on cooldown for this command. Try again in {math.ceil(error.retry_after)} seconds.", color=discord.Colour.red())
+        embed = discord.Embed(
+            title=":hourglass: You're on cooldown!",
+            description=f"It looks like you're on cooldown for this command. Try again in {humanize.naturaltime(datetime.datetime.now() + datetime.timedelta(seconds=math.ceil(error.retry_after)))}.",
+            color=discord.Colour.red()
+        )
         return await ctx.send_response(embed=embed, ephemeral=True)
     log_channel = await bot.fetch_channel(1044725850702102528)
     await log_channel.send(f"Error:```{error}```\nFrom command </{ctx.command}:{ctx.command.qualified_id}>\nUser {ctx.author}")
