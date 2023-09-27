@@ -3,6 +3,8 @@ import os
 import math
 import humanize
 import datetime
+import asyncio
+import data
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -42,6 +44,10 @@ async def on_application_command_error(ctx, error):
             color=discord.Colour.red()
         )
         return await ctx.send_response(embed=embed, ephemeral=True)
+
+    if isinstance(error, asyncio.TimeoutError):
+        pass
+    
     log_channel = await bot.fetch_channel(1044725850702102528)
     await log_channel.send(f"Error:```{error}```\nFrom command </{ctx.command}:{ctx.command.qualified_id}>\nUser {ctx.author}")
     print(f"Error:\n{error}\n\nFrom command /{ctx.command}\nUser {ctx.author}")

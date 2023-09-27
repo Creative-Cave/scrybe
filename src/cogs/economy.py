@@ -4,7 +4,7 @@ import json
 import os
 from discord.ext import commands
 from discord.commands import SlashCommandGroup
-from data import economy_controller as ec
+from controllers import economy_controller as ec
 
 class Economy(commands.Cog):
     def __init__(self, bot):

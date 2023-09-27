@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.commands import SlashCommandGroup
-from data import library_controller as lc
-
+from controllers import library_controller as lc
 
 class Library(discord.Cog):
     def __init__(self, bot):

@@ -2,6 +2,7 @@ import discord
 import requests
 import aiohttp
 import os
+import asyncio
 from discord import Webhook
 from dotenv import load_dotenv
 from discord.ext import commands
@@ -50,28 +51,29 @@ class Chatbot(commands.Cog):
         if message.channel.id not in [1131307096634298490, 1134120291765846066] or message.author.bot or message.content.startswith("^") or message.flags.suppress_notifications:
             return
 
-        message.content = message.content.replace("#", "")
+        async with message.channel.typing():
+            message.content = message.content.replace("#", "")
 
-        chatbot_response = channel_chatbot.generate_response(message.content)[:2000]
-        chatbot_response = chatbot_response.replace("||", "") # remove spoilers automatically added by the api
+            chatbot_response = channel_chatbot.generate_response(message.clean_content)[:2000]
+            chatbot_response = chatbot_response.replace("||", "") # remove spoilers automatically added by the api
 
-        if not message.content:
-            chatbot_response = "It looks like you sent an attachment - I can't understand those right now! Please stick to sending text prompts."
+            if not message.content:
+                return # don't send anything if the message being read has no content (e.g. media)
 
-        if message.channel.id == 1131307096634298490:
-            async with aiohttp.ClientSession() as session: # create a new "session" for the webhook
-                webhook = Webhook.from_url(os.getenv("CLIVE_WEBHOOK_URL"), session=session)
+            if message.channel.id == 1131307096634298490:
+                async with aiohttp.ClientSession() as session: # create a new "session" for the webhook
+                    webhook = Webhook.from_url(os.getenv("CLIVE_WEBHOOK_URL"), session=session)
 
-                if self.last_replied == message.author.id: # only ping the author if responding to a new person
-                    await webhook.send(chatbot_response, username="Clive")
-                else:
-                    await webhook.send(
-                        f"> *Replying to {message.author.mention}:*\n{chatbot_response}", username="Clive")
-        else:
-            if self.last_replied == message.author.id: # only ping the author if responding to a new person
-                await message.channel.send(chatbot_response)
+                    if self.last_replied == message.author.id: # only ping the author if responding to a new person
+                        await webhook.send(chatbot_response, username="Clive")
+                    else:
+                        await webhook.send(
+                            f"> *Replying to {message.author.mention}:*\n{chatbot_response}", username="Clive")
             else:
-                    await message.channel.send(f"> *Replying to {message.author.mention}:*\n{chatbot_response}")
+                if self.last_replied == message.author.id: # only ping the author if responding to a new person
+                    await message.channel.send(chatbot_response)
+                else:
+                        await message.channel.send(f"> *Replying to {message.author.mention}:*\n{chatbot_response}")
 
         self.last_replied = message.author.id
 
