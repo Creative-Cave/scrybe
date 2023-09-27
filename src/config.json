@@ -1,15 +1,22 @@
 {
     "economy": {
         "currency_emoji": ":moneybag:",
-        "currency_symbol": "⩠",
+        "currency_symbol": "$",
 
-        "default_starting_balance": 0,
+        "default_starting_balance": 250,
 
         "min_work_income": 15,
         "max_work_income": 100,
         
         "cooldown": {
             "work": 900
+        },
+
+        "gamble_odds": {
+            "crime": {
+                "win": 0.3,
+                "loss": 0.7
+            }
         },
 
         "strings": {

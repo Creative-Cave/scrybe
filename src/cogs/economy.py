@@ -39,7 +39,7 @@ class Economy(commands.Cog):
         await ctx.send_response(embed=embed)
 
     @commands.slash_command(guild_ids=[915996676144111706], description="Go to work to earn some money.")
-    @commands.cooldown(1, 60*15, commands.BucketType.user)
+    @commands.cooldown(1, 900, commands.BucketType.user)
     async def work(self, ctx):
         earned = random.randint(self.economy_config["min_work_income"], self.economy_config["max_work_income"])
 
@@ -60,7 +60,8 @@ class Economy(commands.Cog):
     @discord.commands.default_permissions(administrator=True)
     @discord.commands.option("user", discord.Member, required=True)
     @discord.commands.option("amount", int, required=False)
-    async def set_balance(self, ctx, user: discord.Member, amount: int = 0):
+    @discord.commands.option("silent", bool, required=False)
+    async def set_balance(self, ctx, user: discord.Member, amount: int = 0, silent: bool = False):
         if not ctx.guild:
             return await ctx.send_response("This is a sensitive command, so it cannot be run in DMs. If you have permission, please run this command in the Creative Cave server instead.")
         
@@ -84,7 +85,7 @@ class Economy(commands.Cog):
         embed.add_field(name="Old balance", value=f":coin: {old_balance:,}")
         embed.add_field(name="New balance", value=f":coin: {amount:,}")
 
-        await ctx.send_response(embed=embed)
+        await ctx.send_response(embed=embed, ephemeral=silent)
         
 
 def setup(bot):
