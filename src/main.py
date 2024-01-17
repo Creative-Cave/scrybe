@@ -4,7 +4,6 @@ import math
 import humanize
 import time
 import asyncio
-import data
 import traceback
 from pathlib import Path
 from discord.ext import commands
