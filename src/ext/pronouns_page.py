@@ -2,6 +2,7 @@ import os
 import requests
 import json
 import github
+from typing import Union
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -30,7 +31,7 @@ def add_pp_username(user_id: int, pp_username: str) -> None:
 
 
 # get a pronouns.page username
-def get_pp_username(user_id: int) -> str | None:
+def get_pp_username(user_id: int) -> Union[str, None]:
     pronouns_page = get_pronouns_page()
 
     if str(user_id) in pronouns_page.keys():
@@ -49,7 +50,7 @@ def remove_pp_username(user_id: int) -> None:
     repo.update_file(pronouns_page_file.path, f"Removed {user_id}", json.dumps(pronouns_page, indent=4), pronouns_page_file.sha)
 
 
-def get_user_if_exists(username: str) -> dict | None:
+def get_user_if_exists(username: str) -> Union[dict, None]:
     r = requests.get(f"https://en.pronouns.page/api/profile/get/{username}?version=2")
     json = r.json()
 
@@ -59,7 +60,7 @@ def get_user_if_exists(username: str) -> dict | None:
         return json
 
 
-def get_pronouns(username: str) -> dict | None:
+def get_pronouns(username: str) -> Union[dict, none]:
     json = get_user_if_exists(username)
 
     if not json:
