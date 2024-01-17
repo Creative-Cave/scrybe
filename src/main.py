@@ -65,7 +65,7 @@ async def on_application_command_error(ctx, error):
     
     log_channel = await bot.fetch_channel(1044725850702102528)
     await log_channel.send(f"An error occurred:```{error}```\nFrom command </{ctx.command}:{ctx.command.qualified_id}>\nUser {ctx.author}")
-    print(f"Error:\n{''.join(traceback.format_exception(error))}\n\nFrom command /{ctx.command}\nUser {ctx.author}")
+    # print(f"Error:\n{''.join(traceback.format_exception(error))}\n\nFrom command /{ctx.command}\nUser {ctx.author}")
 
 
 def run(): # function to start the bot to either be run directly or though app.py
