@@ -3,6 +3,7 @@ from discord.ext import commands
 
 
 class ServerStats(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -24,12 +25,15 @@ class ServerStats(commands.Cog):
         if round(ping * 1000) <= 50:
             colour = 0x44ff44
             tier = "<:signalgood:1132668380466401341> Good"
+
         elif round(ping * 1000) <= 100:
             colour = 0xffd000
             tier = "<:signalaverage:1132668378088218705> Average"
+
         elif round(ping * 1000) <= 200:
             colour = 0xff6600
             tier = "<:signalpoor:1132668374493700177> Poor"
+            
         else:
             colour = 0x990000
             tier = "<:signalbad:1132668370647515197> Bad"

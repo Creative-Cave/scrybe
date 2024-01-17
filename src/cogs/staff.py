@@ -3,10 +3,12 @@ from discord.ext import commands
 
 
 class Staff(commands.Cog):
+    
     def __init__(self, bot):
         self.bot = bot
 
     @commands.slash_command(guild_ids=[915996676144111706], description="Sends a message as Scrybe")
+    @commands.guild_only()
     @discord.commands.default_permissions(administrator=True)
     async def say(self, ctx, message: str):
         sent_message = await ctx.channel.send(message)

@@ -1,31 +1,49 @@
 {
-    "economy": {
-        "currency_emoji": ":moneybag:",
-        "currency_symbol": "$",
-
-        "default_starting_balance": 250,
-
-        "min_work_income": 15,
-        "max_work_income": 100,
-        
-        "cooldown": {
-            "work": 900
-        },
-
-        "gamble_odds": {
-            "crime": {
-                "win": 0.3,
-                "loss": 0.7
-            }
-        },
-
-        "strings": {
-            "work": [
-                "You helped an old man move some furniture.",
-                "You painted a picture of a cat and sold it to an sweet elderly couple.",
-                "You visited your grandmother and she slipped you some money.",
-                "Someone walked past you on the street and, mistaking you for a homeless person, gave you some money."
-            ]
-        }
-    }
+	"economy": {
+		"currency_emoji": ":moneybag:",
+		"currency_symbol": "$",
+		"default_starting_balance": 250,
+		"min_work_income": 15,
+		"max_work_income": 100,
+		"cooldown": {
+			"work": 900
+		},
+		"gamble_odds": {
+			"crime": {
+				"win": 0.3,
+				"loss": 0.7
+			}
+		},
+		"strings": {
+			"work": [
+				"You helped an old man move some furniture.",
+				"You painted a picture of a cat and sold it to an sweet elderly couple.",
+				"You visited your grandmother and she slipped you some money.",
+				"Someone walked past you on the street and, mistaking you for a homeless person, gave you some money."
+			],
+			"coinflip": {
+				"win": [
+					"Congratulations - it landed on {}!",
+					"You win - it was {}!"
+				],
+				"loss": [
+					"You win! Only joking, it landed on {}.",
+					"You lose - it was {}.",
+					"{}, you lose."
+				],
+				"side": [
+					"You-- wait, what? The coin landed on its side."
+				]
+			}
+		},
+		"shop": {
+			"items": {
+				"placeholder_item": {
+					"name": "Placeholder Item",
+					"price": 69420,
+					"max_qty": 1
+				}
+			}
+		}
+	}
 }

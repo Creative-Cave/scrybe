@@ -2,25 +2,24 @@ import discord
 import os
 import math
 import humanize
-import datetime
+import time
 import asyncio
 import data
+import traceback
+from pathlib import Path
 from discord.ext import commands
 from dotenv import load_dotenv
 
-bot = discord.Bot(intents=discord.Intents.all(), activity=discord.Activity(type=5, name="Story Wars"))
+ROOT_DIR = Path(__file__).parent
 
-# count cogs in cogs dir
-exts_to_load = len(
-    [fn for fn in os.listdir(os.path.join("scrybe", "src", "cogs")) if fn.endswith('.py')])
+bot = discord.Bot(intents=discord.Intents.all(), activity=discord.Activity(type=1, name="Goat Simulator 2"))
 
 # iterate through the cogs folder to load each one
-for i, fn in enumerate(os.listdir(os.path.join("scrybe", "src", "cogs"))):
+for i, fn in enumerate(os.listdir(os.path.join(ROOT_DIR, "cogs"))):
     if fn.endswith('.py'):
         bot.load_extension(f'cogs.{fn[:-3]}')
-        print(f"loaded {fn} - {i+1} of {exts_to_load} completed")
 
-if "🗣️.py" not in os.listdir(os.path.join("scrybe", "src", "cogs")):
+if "🗣️.py" not in os.listdir(os.path.join(ROOT_DIR, "cogs")):
     raise SyntaxError("CANVA DESIGN 🗣️(s) not found")
 
 print("done")
@@ -29,10 +28,11 @@ print("done")
 async def on_ready():
     print("bot is online")
 
+
 @bot.event
-async def on_error(error):
+async def on_error(error: Exception):
     log_channel = await bot.fetch_channel(1044725850702102528)
-    await log_channel.send(f"Error:```{error}```")
+    await log_channel.send(f"An error occurred:```{error}```")
 
 
 @bot.event
@@ -40,17 +40,33 @@ async def on_application_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         embed = discord.Embed(
             title=":hourglass: You're on cooldown!",
-            description=f"It looks like you're on cooldown for this command. Try again in {humanize.naturaltime(datetime.datetime.now() + datetime.timedelta(seconds=math.ceil(error.retry_after)))}.",
+            description=f"It looks like you're on cooldown for this command. Try again <t:{round(time.time()) + math.ceil(error.retry_after)}:R>.",
             color=discord.Colour.red()
         )
-        return await ctx.send_response(embed=embed, ephemeral=True)
+        return await ctx.send_response(embed=embed, ephemeral=True, delete_after=math.ceil(error.retry_after))
+
+    if isinstance(error, commands.MissingPermissions):
+        embed = discord.Embed(
+            title="<:no:1097504076977156207> You can't run this command in DMs.",
+            description="You do not have the required permissions to run this command.\n\n##Missing permissions:\n" + '\n'.join(error.missing_permissions),
+            color=discord.Colour.red()
+        )
+        return await ctx.send_response(embed=embed)
+
+    if isinstance(error, commands.NoPrivateMessage):
+        embed = discord.Embed(
+            title="<:no:1097504076977156207> You can't run this command in DMs.",
+            description="For security reasons, you must run this command in the Creative Cave server.",
+            color=discord.Colour.red()
+        )
+        return await ctx.send_response(embed=embed)
 
     if isinstance(error, asyncio.TimeoutError):
         pass
     
     log_channel = await bot.fetch_channel(1044725850702102528)
-    await log_channel.send(f"Error:```{error}```\nFrom command </{ctx.command}:{ctx.command.qualified_id}>\nUser {ctx.author}")
-    print(f"Error:\n{error}\n\nFrom command /{ctx.command}\nUser {ctx.author}")
+    await log_channel.send(f"An error occurred:```{error}```\nFrom command </{ctx.command}:{ctx.command.qualified_id}>\nUser {ctx.author}")
+    print(f"Error:\n{''.join(traceback.format_exception(error))}\n\nFrom command /{ctx.command}\nUser {ctx.author}")
 
 
 def run(): # function to start the bot to either be run directly or though app.py

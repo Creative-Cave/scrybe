@@ -1,93 +1,134 @@
 import discord
 import random
-import json
 import os
+import json
 from discord.ext import commands
 from discord.commands import SlashCommandGroup
-from controllers import economy_controller as ec
+from ext import economy_controller as ec
+
+
+with open(os.path.join("src", "config.json")) as fn:
+    config = json.load(fn)
+
 
 class Economy(commands.Cog):
+    
     def __init__(self, bot):
         self.bot = bot
-        with open(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "config.json"))) as fn:
-            self.config = json.load(fn)
-            self.economy_config = self.config["economy"]
-    
-    economy_group = SlashCommandGroup("economy", "Staff commands for the server economy")
 
-    # get the balance of a user
-    @commands.slash_command(guild_ids=[915996676144111706], description="Get the balance of yourself or another user.")
-    @discord.commands.option("user", discord.Member, required=False)
-    async def balance(self, ctx, user: discord.Member):
+    shop_group = SlashCommandGroup("shop", "View and buy from the server shop")
+    
+    @commands.slash_command(
+        name="balance",
+        description="Gets the balance of a user",
+        guild_ids=[915996676144111706]
+    )
+    @discord.commands.option(
+        name="user",
+        type=discord.Member,
+        required=False
+    )
+    async def balance(self, ctx, user: discord.Member = None):
+        if not user:
+            user = ctx.author
+        
+        async with ctx.typing():
+            eco = ec.get_economy()
+            if str(user.id) not in eco.keys():
+                balance = ec.create_account(user.id)["balance"]
+            else:
+                balance = eco[str(user.id)]["balance"]
+        
+        embed = discord.Embed(
+            title="User Balance",
+            colour=discord.Colour.blue()
+        )
+        embed.add_field(
+            name=f"{user.display_name}'s Balance",
+            value=balance
+        )
+
+        await ctx.respond(embed=embed)
+
+    
+    @commands.slash_command(
+        name="inventory",
+        description="View your or another member's inventory",
+        guild_ids=[915996676144111706]
+    )
+    @discord.commands.option(
+        name="user",
+        type=discord.Member,
+        required=False
+    )
+    async def inventory(self, ctx, user: discord.Member = None):
         if not user:
             user = ctx.author
 
-        economy = ec.get_economy()
-
-        try:
-            user_balance = economy[str(user.id)]
-        except KeyError:
-            ec.create_account(user.id)
-            user_balance = ec.get_economy()[str(user.id)]
-
-        embed = discord.Embed(
-            title = f"Balance for {user.display_name}",
-            colour = discord.Colour.green()
-        )
-
-        embed.add_field(name="Balance", value=f":coin: {user_balance:,}")
-        await ctx.send_response(embed=embed)
-
-    @commands.slash_command(guild_ids=[915996676144111706], description="Go to work to earn some money.")
-    @commands.cooldown(1, 900, commands.BucketType.user)
-    async def work(self, ctx):
-        earned = random.randint(self.economy_config["min_work_income"], self.economy_config["max_work_income"])
-
-        ec.adjust_balance(ctx.author.id, earned)
-        embed = discord.Embed(
-            title = "Work",
-            colour = discord.Colour.green(),
-            description = random.choice(self.economy_config["strings"]["work"])
-        )
-
-        embed.add_field(name="You earned", value=f"{self.economy_config['currency_emoji']} {earned:,}", inline=False)
-        embed.add_field(name="New balance", value=f"{self.economy_config['currency_emoji']} {ec.get_economy()[str(ctx.author.id)]:,}", inline=False)
-
-        await ctx.send_response(embed=embed)
-
-    # set the balance of a user
-    @commands.slash_command(guild_ids=[915996676144111706], description="Set the balance of yourself or another user.")
-    @discord.commands.default_permissions(administrator=True)
-    @discord.commands.option("user", discord.Member, required=True)
-    @discord.commands.option("amount", int, required=False)
-    @discord.commands.option("silent", bool, required=False)
-    async def set_balance(self, ctx, user: discord.Member, amount: int = 0, silent: bool = False):
-        if not ctx.guild:
-            return await ctx.send_response("This is a sensitive command, so it cannot be run in DMs. If you have permission, please run this command in the Creative Cave server instead.")
+        async with ctx.typing():
+            eco = get_economy()
+            if str(user.id) not in eco.keys():
+                inventory = ec.create_account(user.id)["inventory"]
+            else:
+                inventory = eco[str(user.id)]["inventory"]
         
-        economy = ec.get_economy()
+        await ctx.respond("The shop is still a WIP - please be patient!")
 
-        try:
-            old_balance = economy[str(user.id)]
-            economy[str(user.id)] = amount
-        except KeyError:
-            old_balance = 0
-            ec.create_account(user.id)
-            ec.get_economy()[str(user.id)] = amount
 
-        ec.update_economy(economy, f"Set balance for {user.display_name}")
+    @commands.slash_command(
+        name="coinflip",
+        description="Flip a coin",
+        guild_ids=[915996676144111706],
+    )
+    @discord.commands.option(
+        name="guess",
+        choices=["Heads", "Tails"]
+    )
+    @discord.commands.option(
+        name="bet",
+        type=int,
+        default=0,
+        min_value=0
+    )
+    async def coinflip(self, ctx, guess: str, bet: int):
+        result = random.choice(["Heads", "Tails"])
+        if random.randint(1, 500) == 1:
+            result = "Side"
 
+        if bet > ec.get_economy()[str(ctx.author.id)]:
+            return await ctx.respond("You can't afford to make a bet this high.")
+
+        response_strings = config["economy"]["strings"]["coinflip"]
+        
+        if guess == result:
+            response = random.choice(response_strings["win"]).format(result)
+            prize = bet
+
+        elif guess != result and result != "Side":
+            response = random.choice(response_strings["loss"]).format(result)
+            prize = bet * -1
+
+        else:
+            response = random.choice(response_strings["side"]).format(result)
+            prize = 0
+        
+        if prize:
+            ec.adjust_balance(ctx.author.id, prize)
+        
+        if bet and result != "Side":
+            response += f"\nYou {['lost', 'won'][guess==result]} {bet}"
+            
+        elif bet and result == "Side":
+            response += "\nYou won nothing"
+        
         embed = discord.Embed(
-            title = f"Set balance for {user.display_name}",
-            colour = discord.Colour.purple()
+            title="Coinflip",
+            description=response,
+            colour=discord.Colour.yellow()
         )
 
-        embed.add_field(name="Old balance", value=f":coin: {old_balance:,}")
-        embed.add_field(name="New balance", value=f":coin: {amount:,}")
+        await ctx.respond(embed=embed)
 
-        await ctx.send_response(embed=embed, ephemeral=silent)
         
-
 def setup(bot):
     bot.add_cog(Economy(bot))
-    

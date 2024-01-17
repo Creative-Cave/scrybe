@@ -1,9 +1,45 @@
 import discord
 from discord.ext import commands
 from discord.commands import SlashCommandGroup
-from controllers import library_controller as lc
+from ext import library_controller as lc
+
+
+# list of content warnings
+cws = {
+    "Racism": "Discrimination against people based on their race.",
+    "Islamophobia": "Discrimination against Islam/Muslims.",
+    "Antisemitism": "Discrimination against Jewish people.",
+    "Xenophobia": "Discrimination against those from other nationalities, cultures or ethnicities.",
+    "Slavery": "The selling/ownership of individuals as property.",
+    "Homophobia": "Discrimination against members of the LGBTQ+ community.",
+    "Transphobia": "Discrimination against transgender people.",
+    "Misgendering": "The intentional usage of pronouns or language that does not align with someone's gender identity.",
+    "Ableism": "Discrimination against those with disabilities.",
+    "Sexual content": "Any content which could be described as sexual.",
+    "Violence": "Physical force which causes harm, injury or damage to individuals or property.",
+    "Abuse": "Psychological, physical, verbal or emotional harm caused to an individual.",
+    "Gun violence": "Violence involving firearms.",
+    "Blood/gore": "Any content involving blood or gore.",
+    "Suicide": "Intentional killing of oneself.",
+    "Self harm": "Intentional harm to oneself's own body."
+}
+
+class ContentWarningView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+
+    @discord.ui.select(
+        placeholder="Select content warnings",
+        min_values=0,
+        max_values=len(cws),
+        options=[discord.SelectOption(label=list(cws.keys())[k], description=cws[v]) for k, v in enumerate(cws)],
+    )
+    async def select_callback(self, select, interaction):
+        pass  # Do nothing when a selection is made
+
 
 class Library(discord.Cog):
+    
     def __init__(self, bot):
         self.bot = bot
 
@@ -14,6 +50,11 @@ class Library(discord.Cog):
         "Fantasy", "Horror", "Mystery", "Comedy", "Romance", "Crime/Thriller",
         "Sci-Fi", "Non-Fiction", "Poetry"
     ]
+
+    @commands.slash_command(guild_ids=[915996676144111706])
+    @commands.has_permissions(administrator=True)
+    async def ui_test(self, ctx):
+        await ctx.send("...", view=ContentWarningView())
 
     # stand-in command so users can see the library
     @library_group.command(guild_ids=[915996676144111706])
@@ -55,13 +96,11 @@ class Library(discord.Cog):
         await response.edit_original_response(content="Submission sent!")
 
     @library_group.command(guild_ids=[915996676144111706], description="Approves a member's work")
+    @commands.guild_only()
     @discord.commands.default_permissions(administrator=True)
     @discord.option("id", description="The id for the submission to approve")
     @discord.option("change_title", description="Change the work's title (correct grammar/remove anything against rules)", required=False)
     async def approve(self, ctx, id: int, change_title: str):
-        if not ctx.guild:
-            return await ctx.send_response("This is a sensitive command, so it cannot be run in DMs. If you have permission, please run this command in the Creative Cave server instead.")
-
         response = await ctx.send_response("Working...")
 
         try:
