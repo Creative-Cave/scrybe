@@ -95,7 +95,7 @@ class Economy(commands.Cog):
         if random.randint(1, 500) == 1:
             result = "Side"
 
-        if bet > ec.get_economy()[str(ctx.author.id)]:
+        if bet > ec.get_economy()[str(ctx.author.id)]["balance"]:
             return await ctx.respond("You can't afford to make a bet this high.")
 
         response_strings = config["economy"]["strings"]["coinflip"]
@@ -116,7 +116,7 @@ class Economy(commands.Cog):
             ec.adjust_balance(ctx.author.id, prize)
         
         if bet and result != "Side":
-            response += f"\nYou {['lost', 'won'][guess==result]} {bet}"
+            response += f"\nYou {['lost', 'won'][guess == result]} {bet}"
             
         elif bet and result == "Side":
             response += "\nYou won nothing"
