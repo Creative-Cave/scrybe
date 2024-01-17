@@ -60,7 +60,7 @@ def get_user_if_exists(username: str) -> Union[dict, None]:
         return json
 
 
-def get_pronouns(username: str) -> Union[dict, none]:
+def get_pronouns(username: str) -> Union[dict, None]:
     json = get_user_if_exists(username)
 
     if not json:
