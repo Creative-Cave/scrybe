@@ -28,7 +28,7 @@ def update_economy(new_economy: dict, commit_msg: str) -> None:
     repo.update_file(economy_file.path, commit_msg, json.dumps(new_economy, indent=4), economy_file.sha)
 
 # create an "account" for a user and default their balance to DEFAULT_USER_BALANCE unless otherwise specified
-def create_account(user_id: int, starting_balance: int | None = None) -> int:
+def create_account(user_id: int, starting_balance: Union[int, None] = None) -> int:
     economy = get_economy()
     economy[str(user_id)] = {
         "balance": starting_balance or config["economy"]["default_starting_balance"],
