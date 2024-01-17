@@ -2,6 +2,7 @@ import os
 import json
 import github
 import os
+from typing import Union
 from dotenv import load_dotenv
 
 load_dotenv()
